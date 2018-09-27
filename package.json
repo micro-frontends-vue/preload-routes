@@ -1,0 +1,12 @@
+{
+  "name": "vue-simple-micro-frontends",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "serve -p 7200"
+  },
+  "dependencies": {
+    "serve": "^10.0.2"
+  },
+  "devDependencies": {}
+}

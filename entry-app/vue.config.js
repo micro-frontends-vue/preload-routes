@@ -3,13 +3,13 @@ const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const isDevelopment = NODE_ENV === 'development';
+const IS_DEV = NODE_ENV === 'development';
 
 log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  baseUrl: isDevelopment ? APP_NAME : './',
+  baseUrl: IS_DEV ? APP_NAME : './',
 
   productionSourceMap: false,
 

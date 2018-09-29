@@ -17,7 +17,10 @@ export default {
 
   data() {
     return {
-      routes: [],
+      routes: [
+        { name: 'module-one', title: 'module-one' },
+        { name: 'module-two', title: 'module-two' },
+      ],
     };
   },
 
@@ -38,12 +41,6 @@ export default {
         activedRoute.isActive = true;
       }
     },
-  },
-
-  created() {
-    this.$bus.on('common:update-routes', (payload = []) => {
-      this.routes.push(...payload);
-    });
   },
 };
 </script>

@@ -2,46 +2,26 @@
 
 ## Project setup
 
-run `yarn install` in root、entry-app、module-one、module-two folders
-
 ### Compiles and hot-reloads for development
 
 ```bash
-# build module-one
-cd module-one
-yarn build
+# make 'install.sh' and 'serve.sh' executable
+chmod 777 install.sh
+chmod 777 serve.sh
 
-# build module-two
-cd module-two
-yarn build
+# install dependencies
+./install.sh
 
-# run entry-app
-cd entry-app
-yarn run serve
-```
-
-open a new command shell
-
-```bash
-# serve static in root path
-yarn serve
+# development serve
+./serve.sh
 ```
 
 ### Compiles and minifies for production
 
-```
-cd entry-app
-yarn run build
-```
+```bash
+# make 'build.sh' executable
+chmod 777 build.sh
 
-### Run your tests
-
-```
-yarn run test
-```
-
-### Lints and fixes files
-
-```
-yarn run lint
+# production build
+./build.sh
 ```

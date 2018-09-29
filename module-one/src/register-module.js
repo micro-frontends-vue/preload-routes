@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 const DEFAULT_SHARED_POOL_NAME = 'microApp';
 
 /**
@@ -33,12 +31,6 @@ export default function registerModule(moduleName, options = {}) {
   ) {
     routerInstance.addRoutes(options.routes);
     log('register routes');
-    if (typeof Vue.prototype.$bus === 'object') {
-      Vue.prototype.$bus.$emit(
-        'common:update-routes',
-        options.routes.map(({ path, name, title }) => ({ path, name, title })),
-      );
-    }
   }
 
   // register store
@@ -54,6 +46,7 @@ export default function registerModule(moduleName, options = {}) {
   }
 
   function log(msg) {
+    // eslint-disable-next-line no-console
     needLog && console.log(`[${moduleName}]:`, msg);
   }
 }

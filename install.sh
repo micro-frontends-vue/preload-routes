@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 yarn
 
 cd entry-app

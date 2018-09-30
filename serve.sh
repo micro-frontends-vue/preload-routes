@@ -1,11 +1,13 @@
+#!/usr/bin/env bash
+
 cd module-one
-yarn build
+yarn build&&
 
 cd ../module-two
-yarn build
-
-cd ../entry-app
-yarn serve&
+yarn build&&
 
 cd ..
+yarn serve&
+
+cd entry-app
 yarn serve

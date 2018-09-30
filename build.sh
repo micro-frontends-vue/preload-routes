@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 cd module-one
 yarn build
 

@@ -1,5 +1,7 @@
 # vue-simple-micro-frontends
 
+[Detail](https://github.com/zh-rocco/vue-simple-micro-frontends/blob/master/detail.md)
+
 ## Project setup
 
 ### Compiles and hot-reloads for development

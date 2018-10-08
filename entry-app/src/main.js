@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import loadModule from '@/load-module';
+import loadModule, { remove } from '@/load-module';
 import bus from '@/bus';
 
 Vue.config.productionTip = false;
@@ -22,4 +22,5 @@ const modules = [
 
 Promise.all(modules.map((v) => loadModule(v))).then((res) => {
   console.log(res);
+  remove();
 });

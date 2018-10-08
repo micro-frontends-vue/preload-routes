@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       routes: [
-        { name: 'module-one', title: 'module-one' },
-        { name: 'module-two', title: 'module-two' },
+        { name: 'sub-app-one', title: 'sub-app-one' },
+        { name: 'sub-app-two', title: 'sub-app-two' },
       ],
     };
   },

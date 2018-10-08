@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-cd module-one
+cd sub-app-one
 yarn build
 
-cd ../module-two
+cd ../sub-app-two
 yarn build
 
 cd ../entry-app

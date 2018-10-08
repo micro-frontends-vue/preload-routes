@@ -1,11 +1,11 @@
 {
-  "name": "module-one",
+  "name": "sub-app-two",
   "version": "0.1.0",
   "private": true,
-  "devPort": 7310,
+  "devPort": 7320,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name module-one ./src/module.js",
+    "build": "vue-cli-service build --target lib --name sub-app-two ./src/module.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

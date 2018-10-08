@@ -16,8 +16,8 @@ new Vue({
 }).$mount('#app');
 
 const modules = [
-  'http://localhost:7200/module-one/dist/module-one.umd.min.js',
-  'http://localhost:7200/module-two/dist/module-two.umd.min.js',
+  'http://localhost:7200/sub-app-one/dist/sub-app-one.umd.min.js',
+  'http://localhost:7200/sub-app-two/dist/sub-app-two.umd.min.js',
 ];
 
 Promise.all(modules.map((v) => loadModule(v))).then((res) => {

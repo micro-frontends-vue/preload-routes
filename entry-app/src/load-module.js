@@ -14,17 +14,23 @@ export function remove() {
   delete window[DEFAULT_SHARED_POOL_NAME];
 }
 
-export default function loadModule(url, noCache = false) {
+export default function loadModule(url, options = {}) {
   if (!url || typeof url !== 'string') {
-    return Promise.reject();
+    return Promise.reject('Illegal parameter: url, expect a not empty string.');
   }
 
-  return new Promise((resolve, reject) => {
+  if (typeof options !== 'object') {
+    return Promise.reject('Illegal parameter: options, expect an object.');
+  }
+
+  const noCache = !!options.noCache;
+
+  return new Promise((resolve) => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject();
+    script.onload = ({ type }) => resolve({ type, url });
+    script.onerror = ({ type }) => resolve({ type, url });
     script.src = noCache ? addTimestamp(url) : url;
     document.body.appendChild(script);
   });

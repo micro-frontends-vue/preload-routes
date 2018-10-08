@@ -15,6 +15,11 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
-loadModule('http://localhost:7200/module-one/dist/module-one.umd.min.js').then(() => {
-  loadModule('http://localhost:7200/module-two/dist/module-two.umd.min.js');
+const modules = [
+  'http://localhost:7200/module-one/dist/module-one.umd.min.js',
+  'http://localhost:7200/module-two/dist/module-two.umd.min.js',
+];
+
+Promise.all(modules.map((v) => loadModule(v))).then((res) => {
+  console.log(res);
 });

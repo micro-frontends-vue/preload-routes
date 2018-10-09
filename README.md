@@ -1,6 +1,6 @@
 # vue-simple-micro-frontends
 
-[Detail](https://github.com/zh-rocco/vue-simple-micro-frontends/blob/master/detail.md)
+[Detail](./detail.md)
 
 ## Project setup
 

@@ -282,6 +282,54 @@ module.exports = {
 1. 开发环境复杂，子项目开发时依赖 Nginx 转发
 2. 子项目开发模式下无法加载公共导航模块
 
+## OA 具体实践
+
+### meeting 项目修改
+
+1. build 脚本及入口文件修改
+2. 提取公共依赖
+3. 移除无用的功能
+   - 顶部导航
+   - logout
+4. 修改路由表（namespace、path、name 等）
+5. 移除无用样式
+6. iconfont 修改
+   - 重新生成图标字体文件，只包含 meeting-app 需要的图标
+   - iconfont 增加 namespace
+   - 替换目前系统用到的图标字体
+7. 涉及使用 username、user_id、department_id 的地方，修改成从 localStorage 中读取
+
+### flow 项目拆分
+
+从 flow 中分离出基础功能和模块
+
+目前 flow 项目使用 Vue CLI 2 开发，此次顺便升级到 Vue CLI 3
+
+#### entry-app
+
+1. 登录页面
+2. 顶部导航
+3. 提取公共依赖，index.html 内手动引入公共依赖
+4. 打包基础 iconfont
+5. 全局事件总线（Event Bus），挂载到 Vue.prototype 上 ?
+6. 将 username、user_id、department_id 等信息存储到 localStorage
+7. 手动引入子项目的入口 JS
+
+#### flow-app
+
+1. flow 项目的剩余部分
+2. 参考 meeting 项目修改
+
+### 特别注意
+
+1. 在代码中使用 process.env.VUE_APP_NAME 即可获取到当前项目的 namespace
+2. 使用本地存储时记得添加 namespace
+3. 使用全局 Event Bus 时记得添加 namespace
+4. 子项目销毁时，记得
+   - 移除该项目监听的全局 Event Bus ?
+   - 移除全局事件监听
+   - 重置 Vuex store ?
+
 ## 杂项
 
 ### 参考

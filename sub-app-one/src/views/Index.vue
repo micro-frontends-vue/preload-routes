@@ -1,5 +1,5 @@
 <template>
-  <div class="module-app sub-app-one">
+  <div class="sub-app-wrapper sub-app-one">
     <h1>{{ name }}</h1>
     <div class="nav">
       <router-link class="link"

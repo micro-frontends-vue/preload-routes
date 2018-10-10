@@ -257,13 +257,13 @@ storeInstance.registerModule(moduleName, store);
 
 #### 5. 自动添加 CSS 命名空间
 
-添加插件
+1. 添加插件
 
 ```bash
 yarn add postcss-selector-namespace -D
 ```
 
-使用插件
+2. 使用插件
 
 ```javascript
 // postcss.config.js
@@ -275,6 +275,53 @@ module.exports = {
     'postcss-selector-namespace': { namespace: `.${APP_NAME}` },
   },
 };
+```
+
+3. 入口 \*.vue 内添加 namespace className
+
+```vue
+<template>
+  <div class="sub-app-wrapper sub-app-one"></div>
+</template>
+```
+
+## Nginx 配置
+
+修改 nginx.conf
+
+nginx.conf 默认路径：`/usr/local/etc/nginx/nginx.conf`
+
+```nginx
+http {
+    # ...
+
+    server {
+        listen       5080;
+        server_name  localhost;
+        client_max_body_size    600m;
+
+        location /api {
+            proxy_pass  custom_path/to/api;
+            proxy_set_header  X-Real-IP $remote_addr;
+            proxy_set_header  Host $host;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+        location /sub-app-one {
+            proxy_pass  custom_path/to/sub-app-one;
+            proxy_set_header  X-Real-IP $remote_addr;
+            proxy_set_header  Host $host;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+        location /sub-app-two {
+            proxy_pass  custom_path/to/sub-app-two;
+            proxy_set_header  X-Real-IP $remote_addr;
+            proxy_set_header  Host $host;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+
+    # ...
+}
 ```
 
 ## 不足 & 待解决的问题

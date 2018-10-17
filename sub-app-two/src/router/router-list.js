@@ -5,7 +5,6 @@ export default [
   {
     path: IS_DEV ? '/' : `/${APP_NAME}`,
     name: APP_NAME,
-    title: APP_NAME,
     redirect: { name: `${APP_NAME}.page-a` },
     component: () => import(/* webpackChunkName: "index" */ '@/views/Index.vue'),
     children: [

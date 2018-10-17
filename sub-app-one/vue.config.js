@@ -11,6 +11,8 @@ log('NODE_ENV: ', NODE_ENV);
 module.exports = {
   baseUrl: IS_DEV ? APP_NAME : './',
 
+  css: { extract: false },
+
   productionSourceMap: false,
 
   configureWebpack: {

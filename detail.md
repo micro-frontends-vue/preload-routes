@@ -202,7 +202,6 @@ export default [
   {
     path: IS_DEV ? '/' : `/${APP_NAME}`,
     name: APP_NAME,
-    title: APP_NAME,
     redirect: { name: `${APP_NAME}.page-a` },
     component: () => import(/* webpackChunkName: "index" */ '@/views/Index.vue'),
     children: [
@@ -285,6 +284,40 @@ module.exports = {
   <div class="sub-app-wrapper sub-app-one"></div>
 </template>
 ```
+
+### 注意事项
+
+#### 1. 开发路由和线上路由
+
+以 sub-app-one 为例
+
+```javascript
+// vue.config.js
+const APP_NAME = require('./package.json').name;
+const IS_DEV = process.env.NODE_ENV === 'development';
+
+module.exports = {
+  // 开发模式下设置 app 路径
+  baseUrl: IS_DEV ? APP_NAME : './',
+};
+```
+
+```javascript
+// router-list.js
+const IS_DEV = process.env.NODE_ENV === 'development';
+const APP_NAME = process.env.VUE_APP_NAME;
+
+export default [
+  {
+    path: IS_DEV ? '/' : `/${APP_NAME}`,
+    name: APP_NAME,
+  },
+];
+```
+
+开发路由：`http://localhost:7310/sub-app-one/#/page-a`，线上路由则为：`http://online.com/#/sub-app-one/page-a`
+
+说明：这样配置是因为开发模式下需要用 Nginx 将 entry-app 和 sub-apps 转发至同一端口下来实现登录态共享，所以开发模式下以路径区分不同的 app；线上路由则为标准的 vue 路由。
 
 ## Nginx 配置
 

@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link v-for="r in routes"
                    :key="r.name"
-                   :to="{name: r.name}"
+                   :to="r.name"
                    :class="{active: r.isActive}"
                    class="link">{{ r.title }}</router-link>
     </div>
@@ -12,31 +12,34 @@
 </template>
 
 <script>
+import loaderMixin from '@/loader-mixin';
+
 export default {
   name: 'EntryApp',
+
+  mixins: [loaderMixin],
 
   data() {
     return {
       routes: [
-        { name: 'sub-app-one', title: 'sub-app-one' },
-        { name: 'sub-app-two', title: 'sub-app-two' },
+        { name: '/sub-app-one', title: 'sub-app-one' },
+        { name: '/sub-app-two', title: 'sub-app-two' },
       ],
     };
   },
 
   watch: {
-    $route({ name }) {
-      if (typeof name === 'undefined') {
+    $route({ path }) {
+      if (typeof path === 'undefined') {
         return;
       }
-      const appName = name.split('.')[0];
       // remove active class
-      const olsActivedRoute = this.routes.find((v) => v.isActive);
-      if (olsActivedRoute) {
-        olsActivedRoute.isActive = false;
+      const oldActivedRoute = this.routes.find((v) => v.isActive);
+      if (oldActivedRoute) {
+        oldActivedRoute.isActive = false;
       }
       // add active class
-      const activedRoute = this.routes.find(({ name }) => name === appName);
+      const activedRoute = this.routes.find(({ name }) => path.startsWith(name));
       if (activedRoute) {
         activedRoute.isActive = true;
       }

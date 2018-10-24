@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "vue": "^2.5.17",
+    "vue-module-register": "^1.0.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

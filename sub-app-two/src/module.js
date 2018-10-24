@@ -1,7 +1,9 @@
+import { CreateRegister } from 'vue-module-register';
 import store from '@/store/store-module';
 import routes from '@/router/router-list';
-import registerModule from '@/register-module';
 
-registerModule(process.env.VUE_APP_NAME, { routes, store });
+const register = new CreateRegister({
+  name: process.env.VUE_APP_NAME,
+});
 
-export default { routes, store };
+register.registerModule(store).addRoutes(routes);

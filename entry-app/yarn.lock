@@ -7511,10 +7511,10 @@ vue-loader@^15.4.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-module-register@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vue-module-register/-/vue-module-register-1.0.1.tgz#dcc3f785bbb9a896cf84773f7d6997ba785aebb7"
-  integrity sha512-pgTW6wJ8JuWu4ZxVXyHLTakK78i2KHXAa5UNgXXhs/PF0LWCyNr/f5FCatvV7OJwxVdFOKe8sKP1vD5qgzymyQ==
+vue-module-register@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-module-register/-/vue-module-register-1.0.2.tgz#9b39d5eceb5895258c0a75b5acbbb76caaf3910e"
+  integrity sha512-1wHUdkTuxIG3YGx8bgGO/gNiIL5EhaPVL0N7NEykrpfVPivMO9rv6X8C6IbGOjm9eETWhbl8NGN/uDRiX5FgjQ==
 
 vue-router@^3.0.1:
   version "3.0.1"

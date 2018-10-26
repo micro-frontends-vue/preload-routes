@@ -2,6 +2,8 @@
 
 [Detail](./detail.md)
 
+Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.com/fe_tiny_spa.html)(@[美团技术团队](https://tech.meituan.com))
+
 ## Project setup
 
 ### Compiles and hot-reloads for development

@@ -30,7 +30,7 @@ yarn serve
 cd sub-app-two
 yarn serve
 
-# open: http:localhost:3300/entry-app/
+# open: http://localhost:3300/entry-app/
 ```
 
 ### Compiles and minifies for production

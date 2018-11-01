@@ -1,4 +1,4 @@
-# module-a
+# sub-app-two
 
 ## Project setup
 

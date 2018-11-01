@@ -6,10 +6,21 @@
          src="@/assets/images/nodejs.png"
          alt="nodejs">
     <br>
-    <p>Open the Chrome DevTools, there is an image loading error:</p>
+    <p v-if="isProd">Open the Chrome DevTools, there is an image loading error:</p>
     <div class="background"></div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      isProd: process.env.NODE_ENV === 'production',
+    };
+  },
+};
+</script>
+
 
 <style lang="less">
 .page {

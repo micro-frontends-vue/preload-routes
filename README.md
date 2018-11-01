@@ -11,13 +11,26 @@ Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.co
 ```bash
 # make 'install.sh' and 'serve.sh' executable
 chmod 777 install.sh
-chmod 777 serve.sh
 
 # install dependencies
 ./install.sh
 
 # development serve
-./serve.sh
+yarn proxy
+
+# open a new shell
+cd entry-app
+yarn serve
+
+# open a new shell
+cd sub-app-one
+yarn serve
+
+# open a new shell
+cd sub-app-two
+yarn serve
+
+# open: http:localhost:3300/entry-app/
 ```
 
 ### Compiles and minifies for production

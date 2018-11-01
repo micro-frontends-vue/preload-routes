@@ -3,13 +3,12 @@ const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const IS_DEV = NODE_ENV === 'development';
 
 log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  baseUrl: IS_DEV ? APP_NAME : './',
+  baseUrl: `/${APP_NAME}/`,
 
   productionSourceMap: false,
 
@@ -21,10 +20,6 @@ module.exports = {
       vuex: 'Vuex',
       'vue-router': 'VueRouter',
       'element-ui': 'ELEMENT',
-    },
-
-    output: {
-      libraryExport: 'default',
     },
 
     plugins: [

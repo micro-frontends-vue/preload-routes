@@ -1,12 +1,14 @@
 {
   "name": "vue-simple-micro-frontends",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "serve -p 7200"
+    "proxy": "node ./proxy.js"
   },
   "dependencies": {
-    "serve": "^10.0.2"
+    "connect-timeout": "^1.9.0",
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^0.19.0"
   },
   "devDependencies": {}
 }

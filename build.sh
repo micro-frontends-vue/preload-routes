@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-cd sub-app-one
-yarn build
+cd entry-app
+yarn build&&
+
+cd ../sub-app-one
+yarn build&&
 
 cd ../sub-app-two
-yarn build
+yarn build&&
 
-cd ../entry-app
-yarn build
+cd ../
+yarn serve

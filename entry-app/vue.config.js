@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
+const PROXY = require('./config/proxy');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -8,7 +9,7 @@ log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  baseUrl: `/${APP_NAME}/`,
+  baseUrl: './',
 
   productionSourceMap: false,
 
@@ -31,6 +32,7 @@ module.exports = {
 
   devServer: {
     port: PORT,
+    proxy: PROXY,
   },
 };
 

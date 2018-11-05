@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "proxy": "node ./proxy.js"
+    "serve": "node ./serve.js"
   },
   "dependencies": {
     "connect-timeout": "^1.9.0",
-    "express": "^4.16.4",
-    "http-proxy-middleware": "^0.19.0"
+    "express": "^4.16.4"
   },
   "devDependencies": {}
 }

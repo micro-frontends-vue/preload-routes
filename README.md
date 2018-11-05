@@ -16,9 +16,6 @@ chmod 777 install.sh
 ./install.sh
 
 # development serve
-yarn proxy
-
-# open a new shell
 cd entry-app
 yarn serve
 
@@ -30,7 +27,7 @@ yarn serve
 cd sub-app-two
 yarn serve
 
-# open: http://localhost:3300/entry-app/
+# open: http://localhost:7300/
 ```
 
 ### Compiles and minifies for production
@@ -41,4 +38,6 @@ chmod 777 build.sh
 
 # production build
 ./build.sh
+
+# open: http://localhost:3000/
 ```

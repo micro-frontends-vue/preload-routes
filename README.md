@@ -16,14 +16,16 @@ chmod 777 install.sh
 ./install.sh
 
 # development serve
+
+# dev entry-app
 cd entry-app
 yarn serve
 
-# open a new shell
+# open a new shell, dev sub-app
 cd sub-app-one
 yarn serve
 
-# open a new shell
+# open a new shell, dev sub-app
 cd sub-app-two
 yarn serve
 

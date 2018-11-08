@@ -41,5 +41,8 @@ chmod 777 build.sh
 # production build
 ./build.sh
 
+# production build with serve
+./build.sh --serve
+
 # open: http://localhost:3000/
 ```

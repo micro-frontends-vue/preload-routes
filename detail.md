@@ -8,14 +8,14 @@
 
 1. 子项目支持单独开发，单独部署（避免前端巨无霸，多团队同时开发）
 2. 单一的入口 HTML（不同项目之间切换时无白屏现象）
-3. 支持多语言开发（JavaScript、TypeScript 等）
+3. 支持多语言开发（JavaScript、TypeScript 等）\*
 
 ## 思路
 
-1. 将子项目打包成库文件，umd 模块
-2. 在入口项目中加载子项目
-3. 使用 vue-router 的 [`router.addRoutes`](https://github.com/zh-rocco/fe-notes/issues/29) 将子项目的路由动态注册到入口项目中
-4. 使用 Vuex 的 [`store.registerModule`](https://github.com/zh-rocco/fe-notes/issues/31) 将子项目的 store module 动态注册到入口项目中
+1. 将 sub-app(子项目) 打包成库文件，umd 模块
+2. 在 entry-app(入口项目) 中加载 sub-app
+3. 使用 vue-router 的 [`router.addRoutes`](https://github.com/zh-rocco/fe-notes/issues/29) 将 sub-app 的路由动态注册到 entry-app 中
+4. 使用 Vuex 的 [`store.registerModule`](https://github.com/zh-rocco/fe-notes/issues/31) 将 sub-app 的 `store module` 动态注册到 entry-app 中
 
 ## 具体实现
 
@@ -32,31 +32,59 @@ vue create entry-app
 vue create sub-app-one
 ```
 
-### 二、入口项目 (entry-app)
+### 二、entry-app
 
-#### 1. 提取公共依赖
+#### 1. 配置 `vue.config.js`
+
+`vue.config.js`
 
 ```javascript
-// vue.config.js
+const webpack = require('webpack');
+const APP_NAME = require('./package.json').name;
+const PORT = require('./package.json').devPort;
+const PROXY = require('./config/proxy');
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+log('APP_NAME: ', APP_NAME);
+log('NODE_ENV: ', NODE_ENV);
+
 module.exports = {
+  baseUrl: './',
+  productionSourceMap: false,
   configureWebpack: {
     externals: {
+      lodash: '_',
+      moment: 'moment',
       vue: 'Vue',
       vuex: 'Vuex',
       'vue-router': 'VueRouter',
       'element-ui': 'ELEMENT',
-      moment: 'moment',
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
+      }),
+    ],
+  },
+  devServer: {
+    port: PORT,
+    proxy: PROXY,
   },
 };
+
+function log(label, content, options) {
+  console.log('\x1b[1m%s\x1b[31m%s\x1b[0m', label, content);
+}
 ```
 
 #### 2. 手动引入外部依赖
 
+`public/index.html`
+
 ```html
-<!-- index.html -->
 <head>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.3.9/theme-chalk/index.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.3.9/theme-chalk/index.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -68,194 +96,139 @@ module.exports = {
 </body>
 ```
 
-#### 3. 挂载 router / store 实例
+#### 3. 配置开发代理
 
-在子项目中用到了这两个实例
+`config/proxy.js`
 
 ```javascript
-// main.js
-window.microApp = {};
+module.exports = {
+  '/sub-app-one/': {
+    target: 'http://localhost:7310/', // 指向 sub-app-one 开发服务
+  },
+  '/sub-app-two/': {
+    target: 'http://localhost:7320/', // 指向 sub-app-two 开发服务
+  },
+};
 ```
 
-```javascript
-// store.js
-const store = new Vuex.Store({
-  state: { name: 'entry-app' },
-  mutations: {},
-  actions: {},
-});
+#### 4. 挂载 router / store 实例
 
-window.microApp.store = store;
-```
+`src/loader-mixin.js`
 
 ```javascript
-// router.js
-const router = new Router({ routes });
+import { CreateLoaderMixin } from 'vue-module-register';
+import store from '@/store';
+import router from '@/router';
 
-window.microApp.router = router;
-```
-
-#### 4. 加载子项目
-
-```javascript
-// load-module.js
-export default function loadModule(url, options = {}) {
-  if (!url || typeof url !== 'string') {
-    return Promise.reject('Illegal parameter: url, expect a not empty string.');
-  }
-
-  if (typeof options !== 'object') {
-    return Promise.reject('Illegal parameter: options, expect an object.');
-  }
-
-  const noCache = !!options.noCache;
-
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.onload = ({ type }) => resolve({ type, url });
-    script.onerror = ({ type }) => resolve({ type, url });
-    script.src = noCache ? addTimestamp(url) : url;
-    document.body.appendChild(script);
-  });
-}
-
-function addTimestamp(url) {
-  return url.indexOf('?') > -1 ? `${url}&t=${Date.now()}` : `${url}?t=${Date.now()}`;
-}
-```
-
-```javascript
-// main.js
-import loadModule, { remove } from 'path/to/load-module.js';
-
+// 打包后的 sub-app 路径
 const modules = [
-  'http://localhost:7200/sub-app-one/dist/sub-app-one.umd.min.js',
-  'http://localhost:7200/sub-app-two/dist/sub-app-two.umd.min.js',
+  { name: 'sub-app-one', url: '/sub-app-one/main.js' },
+  { name: 'sub-app-two', url: '/sub-app-two/main.js' },
+  // more...
 ];
 
-Promise.all(modules.map((url) => loadModule(url))).then((res) => {
-  console.log(res);
-  remove();
+export default new CreateLoaderMixin({
+  modules,
+  store,
+  router,
+  cache: false,
 });
 ```
 
-### 三、子项目 (sub-app-one)
+#### 5. 异步加载子项目
+
+`src/App.vue`
+
+```javascript
+import loaderMixin from '@/loader-mixin';
+
+export default {
+  name: 'EntryApp',
+  mixins: [loaderMixin],
+};
+```
+
+### 三、sub-app
 
 #### 1. 修改 build script
 
-package.json
+`package.json`
 
 ```json
 {
   "scripts": {
-    "build": "vue-cli-service build --target lib --name sub-app-one ./src/module.js"
+    "build": "vue-cli-service build --target lib --formats umd-min --name sub-app-one ./src/module.js"
   }
 }
 ```
 
 这样可以将 sub-app-one 构建成一个库，然后在 entry-app 中引用，[参考](https://cli.vuejs.org/zh/guide/build-targets.html#%E5%BA%93)
 
-#### 2. 提取公共依赖
+#### 2. 配置 `vue.config.js`
 
 ```javascript
-// vue.config.js
 const webpack = require('webpack');
-
 const APP_NAME = require('./package.json').name;
-const IS_DEV = process.env.NODE_ENV === 'development';
+const PORT = require('./package.json').devPort;
+const patchCliService = require('./scripts/patch-cli-service');
+
+patchCliService();
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+log('APP_NAME: ', APP_NAME);
+log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
+  baseUrl: `/${APP_NAME}/`,
+  css: { extract: false },
+  productionSourceMap: false,
   configureWebpack: {
-    externals: IS_DEV
-      ? {}
-      : {
-          vue: 'Vue',
-          vuex: 'Vuex',
-          'vue-router': 'VueRouter',
-          'element-ui': 'ELEMENT',
-          moment: 'moment',
-        },
-
+    externals: {
+      lodash: '_',
+      moment: 'moment',
+      vue: 'Vue',
+      vuex: 'Vuex',
+      'vue-router': 'VueRouter',
+      'element-ui': 'ELEMENT',
+    },
+    entry: './src/module.js',
+    output: {
+      libraryExport: 'default',
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
       }),
     ],
   },
-};
-```
-
-开发时使用 node_modules 文件，构建后使用外部依赖
-
-#### 3. 动态注册路由
-
-为子项目路由添加命名空间
-
-```javascript
-// router-list.js
-const IS_DEV = process.env.NODE_ENV === 'development';
-const APP_NAME = process.env.VUE_APP_NAME;
-
-export default [
-  {
-    path: IS_DEV ? '/' : `/${APP_NAME}`,
-    name: APP_NAME,
-    redirect: { name: `${APP_NAME}.page-a` },
-    component: () => import(/* webpackChunkName: "index" */ '@/views/Index.vue'),
-    children: [
-      {
-        path: 'page-a',
-        name: `${APP_NAME}.page-a`,
-        component: () => import(/* webpackChunkName: "page-a" */ '@/views/PageA.vue'),
-      },
-      {
-        path: 'page-b',
-        name: `${APP_NAME}.page-b`,
-        component: () => import(/* webpackChunkName: "page-b" */ '@/views/PageB.vue'),
-      },
-    ],
+  devServer: {
+    port: PORT,
   },
-];
-```
-
-注册路由
-
-```javascript
-// module.js
-import routes from 'path/to/router-list.js';
-
-const routerInstance = window.microApp.router; // 后面有解释
-routerInstance.addRoutes(routes);
-```
-
-#### 4. 动态注册 Vuex module
-
-提取 Vuex module，添加命名空间
-
-```javascript
-// store-module.js
-export default {
-  namespaced: true, // namespaced must be true in module app.
-  state: { name: process.env.VUE_APP_NAME },
-  mutations: {},
-  actions: {},
 };
+
+function log(label, content, options) {
+  console.log('\x1b[1m%s\x1b[31m%s\x1b[0m', label, content);
+}
 ```
 
-注册 Vuex module
+#### 3. 动态注册路由 / Vuex module
+
+`src/module.js`
 
 ```javascript
-// module.js
-import store from 'path/to/store-module.js';
+import { CreateRegister } from 'vue-module-register';
+import store from '@/store/store-module';
+import routes from '@/router/router-list';
 
-const storeInstance = window.microApp.store; // 后面有解释
-const moduleName = process.env.VUE_APP_NAME;
-storeInstance.registerModule(moduleName, store);
+const register = new CreateRegister({
+  name: process.env.VUE_APP_NAME,
+});
+
+register.registerModule(store).addRoutes(routes);
 ```
 
-#### 5. 自动添加 CSS 命名空间
+#### 4. 自动添加 CSS 命名空间（可选）
 
 1. 添加插件
 
@@ -265,8 +238,9 @@ yarn add postcss-selector-namespace -D
 
 2. 使用插件
 
+`postcss.config.js`
+
 ```javascript
-// postcss.config.js
 const APP_NAME = require('./package.json').name;
 
 module.exports = {
@@ -277,7 +251,7 @@ module.exports = {
 };
 ```
 
-3. 入口 \*.vue 内添加 namespace className
+3. 入口 \*.vue 内添加 namespace className: `sub-app-one`
 
 ```vue
 <template>
@@ -287,129 +261,58 @@ module.exports = {
 
 ### 注意事项
 
-#### 1. 开发路由和线上路由
+#### 1. 为异步加载的模块提供唯一的 `webpackChunkName`
 
-以 sub-app-one 为例
+例如:
 
-```javascript
-// vue.config.js
-const APP_NAME = require('./package.json').name;
-const IS_DEV = process.env.NODE_ENV === 'development';
+`router-list.js`
 
-module.exports = {
-  // 开发模式下设置 app 路径
-  baseUrl: IS_DEV ? APP_NAME : './',
-};
-```
-
-```javascript
-// router-list.js
-const IS_DEV = process.env.NODE_ENV === 'development';
-const APP_NAME = process.env.VUE_APP_NAME;
-
-export default [
-  {
-    path: IS_DEV ? '/' : `/${APP_NAME}`,
-    name: APP_NAME,
-  },
-];
-```
-
-开发路由：`http://localhost:7310/sub-app-one/#/page-a`，线上路由则为：`http://online.com/#/sub-app-one/page-a`
-
-说明：这样配置是因为开发模式下需要用 Nginx 将 entry-app 和 sub-apps 转发至同一端口下来实现登录态共享，所以开发模式下以路径区分不同的 app；线上路由则为标准的 vue 路由。
-
-## Nginx 配置
-
-修改 nginx.conf
-
-nginx.conf 默认路径：`/usr/local/etc/nginx/nginx.conf`
-
-```nginx
-http {
-    # ...
-
-    server {
-        listen       5080;
-        server_name  localhost;
-        client_max_body_size    600m;
-
-        location /api {
-            proxy_pass  custom_path/to/api;
-            proxy_set_header  X-Real-IP $remote_addr;
-            proxy_set_header  Host $host;
-            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-        location /sub-app-one {
-            proxy_pass  custom_path/to/sub-app-one;
-            proxy_set_header  X-Real-IP $remote_addr;
-            proxy_set_header  Host $host;
-            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-        location /sub-app-two {
-            proxy_pass  custom_path/to/sub-app-two;
-            proxy_set_header  X-Real-IP $remote_addr;
-            proxy_set_header  Host $host;
-            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-    }
-
-    # ...
+```json
+{
+  "path": "page-a",
+  "name": `${APP_NAME}.page-a`,
+  "component": () => import(/* webpackChunkName: "app-one" */ "@/views/PageA.vue")
 }
 ```
 
+原因:
+
+默认情况下 `webpackChunkName` 为递增的数字，开发模式下会将 sub-app 的服务转发至 entry-app，此时会出现 chunk 重名的问题，导致资源加载失败。
+
 ## 不足 & 待解决的问题
 
-1. 开发环境复杂，子项目开发时依赖 Nginx 转发
-2. 子项目开发模式下无法加载公共导航模块
+#### 1. 鉴权问题
 
-## OA 具体实践
+由于 sub-app 的路由是异步加载 / 注册的，导致 sub-app 无法使用 `meta` 判断路由是否需要鉴权
 
-### meeting 项目修改
+**优化方向: 在 entry-app 实例化之前加载 sub-app 的路由**
 
-1. build 脚本及入口文件修改
-2. 提取公共依赖
-3. 移除无用的功能
-   - 顶部导航
-   - logout
-4. 修改路由表（namespace、path、name 等）
-5. 移除无用样式
-6. iconfont 修改
-   - 重新生成图标字体文件，只包含 meeting-app 需要的图标
-   - iconfont 增加 namespace
-   - 替换目前系统用到的图标字体
-7. 涉及使用 username、user_id、department_id 的地方，修改成从 localStorage 中读取
+#### 2. sub-app 缓存问题
 
-### flow 项目拆分
+sub-app 构建结果的入口文件是 `main.js`，然后使用 `vue-module-register` 的 `loaderMixin` 方法异步加载，为了防缓存会在加载 `main.js` 时添加时间戳。此操作会导致 sub-app 的入口文件无法缓存，每次都需要向服务端请求。
 
-从 flow 中分离出基础功能和模块
+一种解决思路：entry-app 里加载子项目时手动添加版本号，缺点是升级 sub-app 的时候需要升级 entry-app
 
-目前 flow 项目使用 Vue CLI 2 开发，此次顺便升级到 Vue CLI 3
+`src/loader-mixin.js`
 
-#### entry-app
+```javascript
+const VERSION = require('../../package.json').version;
+const modules = [
+  { name: 'sub-app-one', url: `/sub-app-one/main.js?version=${VERSION}` },
+  { name: 'sub-app-two', url: `/sub-app-two/main.js?version=${VERSION}` },
+  // more...
+];
 
-1. 登录页面
-2. 顶部导航
-3. 提取公共依赖，index.html 内手动引入公共依赖
-4. 打包基础 iconfont
-5. 全局事件总线（Event Bus），挂载到 Vue.prototype 上 ?
-6. 将 username、user_id、department_id 等信息存储到 localStorage
-7. 手动引入子项目的入口 JS
+// CreateLoaderMixin options 里关闭 cache
+export default new CreateLoaderMixin({
+  store,
+  router,
+  modules,
+  cache: false,
+});
+```
 
-#### flow-app
-
-1. flow 项目的剩余部分
-2. 参考 meeting 项目修改
-
-### 特别注意
-
-1. 在代码中使用 process.env.VUE_APP_NAME 即可获取到当前项目的 namespace
-2. 使用本地存储时记得添加 namespace
-3. 使用全局 Event Bus 时记得添加 namespace
-4. 子项目销毁时，记得
-   - 移除该项目监听的全局 Event Bus ?
-   - 移除全局事件监听
-   - 重置 Vuex store ?
+另一种解决思路：额外加载一个 sub-app 的 version map 文件，每次构建 sub-app 时自动维护此 map
 
 ## 杂项
 

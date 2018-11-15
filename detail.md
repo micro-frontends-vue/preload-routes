@@ -261,7 +261,7 @@ module.exports = {
 
 ### 注意事项
 
-#### 1. 为异步加载的模块提供唯一的 `webpackChunkName`
+#### ~~1. 为异步加载的模块提供唯一的 `webpackChunkName`~~
 
 例如:
 
@@ -278,6 +278,29 @@ module.exports = {
 原因:
 
 默认情况下 `webpackChunkName` 为递增的数字，开发模式下会将 sub-app 的服务转发至 entry-app，此时会出现 chunk 重名的问题，导致资源加载失败。
+
+**此问题已解决，解决办法如下：**
+
+`sub-app` 下安装插件 [modify-chunk-id-webpack-plugin](https://github.com/zh-rocco/modify-chunk-id-webpack-plugin)
+
+```bash
+yarn add modify-chunk-id-webpack-plugin -D
+```
+
+`vue.config.js`
+
+```javascript
+const ModifyChunkIdPlugin = require('modify-chunk-id-webpack-plugin');
+
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      new ModifyChunkIdPlugin({ random: process.env.NODE_ENV === 'development' }),
+      // other plugins
+    ],
+  },
+};
+```
 
 ## 不足 & 待解决的问题
 

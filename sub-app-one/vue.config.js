@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const ModifyChunkIdPlugin = require('modify-chunk-id-webpack-plugin');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
 const patchCliService = require('./scripts/patch-cli-service');
@@ -37,6 +38,7 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
       }),
+      new ModifyChunkIdPlugin({ random: process.env.NODE_ENV === 'development' }),
     ],
   },
 

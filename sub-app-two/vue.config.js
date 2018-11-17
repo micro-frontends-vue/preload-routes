@@ -18,11 +18,7 @@ module.exports = {
 
   configureWebpack: {
     externals: {
-      lodash: '_',
-      moment: 'moment',
       vue: 'Vue',
-      vuex: 'Vuex',
-      'vue-router': 'VueRouter',
       'element-ui': 'ELEMENT',
     },
 

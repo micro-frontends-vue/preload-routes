@@ -2,11 +2,11 @@ import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import bus from '@/bus';
+import GlobalMethods from '@/utils/global-methods';
 
 Vue.config.productionTip = false;
 
-Vue.use(bus);
+Vue.use(GlobalMethods);
 
 new Vue({
   router,

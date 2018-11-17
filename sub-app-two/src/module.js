@@ -1,6 +1,8 @@
-import { CreateRegister } from 'vue-module-register';
+import Vue from 'vue';
 import store from '@/store/store-module';
 import routes from '@/router/router-list';
+
+const CreateRegister = Vue.prototype.$sharedMethods.CreateRegister;
 
 const register = new CreateRegister({
   name: process.env.VUE_APP_NAME,

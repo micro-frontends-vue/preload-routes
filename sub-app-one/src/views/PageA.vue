@@ -2,6 +2,11 @@
   <div class="page">
     <h3>This is a page: A</h3>
 
+    <p>
+      <input type="text"
+             v-model="value">
+    </p>
+
     <img class="image"
          src="@/assets/images/nodejs.png"
          alt="nodejs">
@@ -9,6 +14,18 @@
     <div class="background"></div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'one-page-a',
+  autoStorage: ['value'],
+  data() {
+    return {
+      value: '',
+    };
+  },
+};
+</script>
 
 <style lang="less">
 .page {

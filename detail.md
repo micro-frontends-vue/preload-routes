@@ -267,7 +267,7 @@ module.exports = {
 
 `router-list.js`
 
-```json
+```javascript
 {
   "path": "page-a",
   "name": `${APP_NAME}.page-a`,
@@ -277,7 +277,7 @@ module.exports = {
 
 原因:
 
-默认情况下 `webpackChunkName` 为递增的数字，开发模式下会将 sub-app 的服务转发至 entry-app，此时会出现 chunk 重名的问题，导致资源加载失败。
+默认情况下 `webpackChunkName` 为递增的数字，开发模式下会将 sub-app 的服务转发至 entry-app，此时会出现 chunk 重名的问题，导致资源加载失败。
 
 **此问题已解决，解决办法如下：**
 

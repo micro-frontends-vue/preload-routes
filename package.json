@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "node ./serve.js"
+    "serve": "node ./serve.js",
+    "build:serve": "source ./build.sh && yarn serve",
+    "build:demo": "rimraf docs && source ./build.sh && node ./copy.js"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "connect-timeout": "^1.9.0",
-    "express": "^4.16.4"
-  },
-  "devDependencies": {}
+    "express": "^4.16.4",
+    "recursive-copy": "^2.0.9",
+    "rimraf": "^2.6.2"
+  }
 }

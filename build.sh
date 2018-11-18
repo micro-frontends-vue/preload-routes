@@ -25,4 +25,4 @@ cd ../sub-app-two
 yarn build&&
 
 cd ../
-contains "$*" '--serve' && yarn serve
+# contains "$*" '--serve' && yarn serve

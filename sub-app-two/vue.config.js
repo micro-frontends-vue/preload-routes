@@ -12,7 +12,7 @@ log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  baseUrl: `/${APP_NAME}/`,
+  baseUrl: `./${APP_NAME}/`,
 
   productionSourceMap: false,
 

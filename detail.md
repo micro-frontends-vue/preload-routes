@@ -1,8 +1,10 @@
 # 基于 Vue 的前端项目集成方案
 
-## DEMO
+## Repository
 
 [vue-simple-micro-frontends](https://github.com/zh-rocco/vue-simple-micro-frontends)
+
+[Online demo](https://zh-rocco.github.io/vue-simple-micro-frontends/)
 
 ## 目标
 
@@ -84,15 +86,33 @@ function log(label, content, options) {
 
 ```html
 <head>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.3.9/theme-chalk/index.css" rel="stylesheet" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.3.9/theme-chalk/index.css"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.0/index.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.0/index.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"
+  ></script>
 </body>
 ```
 

@@ -35,14 +35,11 @@ yarn serve
 ### Compiles and minifies for production
 
 ```bash
-# make 'build.sh' executable
-chmod 777 build.sh
-
 # production build
-./build.sh
+yarn build
 
 # production build with serve
-./build.sh --serve
+yarn build:serve
 
 # open: http://localhost:3000/
 ```

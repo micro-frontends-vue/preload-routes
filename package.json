@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "node ./serve.js",
-    "build:serve": "source ./build.sh && yarn serve",
-    "build:demo": "rimraf docs && source ./build.sh && node ./copy.js"
+    "build": "source ./build.sh",
+    "build:serve": "npm run build && npm run serve",
+    "build:demo": "rimraf docs && npm run build && node ./copy.js"
   },
   "dependencies": {},
   "devDependencies": {

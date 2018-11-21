@@ -16,7 +16,7 @@
     "@vue/eslint-config-prettier": "^4.0.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "modify-chunk-id-webpack-plugin": "^0.1.3",
+    "modify-chunk-id-webpack-plugin": "^0.1.4",
     "postcss-selector-namespace": "^1.5.0",
     "vue-template-compiler": "^2.5.17"
   }

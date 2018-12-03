@@ -1,8 +1,8 @@
 module.exports = {
-  '/sub-app-one/': {
+  '/sub-app-ts/': {
     target: 'http://localhost:7310/',
   },
-  '/sub-app-two/': {
+  '/sub-app-js/': {
     target: 'http://localhost:7320/',
   },
 };

@@ -26,8 +26,8 @@ function resolvePath(relativePath) {
 }
 
 // 静态页面（这里一般设置你的静态资源路径）
-app.use('/sub-app-one/', express.static(resolvePath('./sub-app-one/dist/')));
-app.use('/sub-app-two/', express.static(resolvePath('./sub-app-two/dist/')));
+app.use('/sub-app-ts/', express.static(resolvePath('./sub-app-ts/dist/')));
+app.use('/sub-app-js/', express.static(resolvePath('./sub-app-js/dist/')));
 app.use('/', express.static(resolvePath('./entry-app/dist/')));
 
 // 监听端口

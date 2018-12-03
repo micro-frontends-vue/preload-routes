@@ -18,10 +18,10 @@ contains() {
 cd entry-app
 yarn build&&
 
-cd ../sub-app-one
+cd ../sub-app-ts
 yarn build&&
 
-cd ../sub-app-two
+cd ../sub-app-js
 yarn build&&
 
 cd ../

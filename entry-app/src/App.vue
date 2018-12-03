@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       routes: [
-        { name: '/sub-app-one', title: 'sub-app-one' },
-        { name: '/sub-app-two', title: 'sub-app-two' },
+        { name: '/sub-app-ts', title: 'sub-app-ts' },
+        { name: '/sub-app-js', title: 'sub-app-js' },
       ],
     };
   },
@@ -64,7 +64,7 @@ export default {
 
     &.router-link-exact-active,
     &.active {
-      color: #42b983;
+      color: #ea6e76;
     }
   }
 }

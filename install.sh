@@ -5,8 +5,8 @@ yarn
 cd entry-app
 yarn
 
-cd ../sub-app-one
+cd ../sub-app-ts
 yarn
 
-cd ../sub-app-two
+cd ../sub-app-js
 yarn

@@ -9,7 +9,7 @@ const router = new Router({
   routes: existedRoutes.concat([
     {
       path: '/',
-      redirect: { name: 'sub-app-js' },
+      redirect: { name: 'sub-app-ts' },
     },
     {
       path: '*',

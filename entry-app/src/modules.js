@@ -1,1 +1,5 @@
-module.exports = ['./sub-app-one/main.js', './sub-app-two/main.js'];
+module.exports = [
+  // sub apps
+  './sub-app-ts/main.js',
+  './sub-app-js/main.js',
+];

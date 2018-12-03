@@ -6,12 +6,12 @@ const task = [
     dest: 'docs',
   },
   {
-    src: 'sub-app-one/dist',
-    dest: 'docs/sub-app-one',
+    src: 'sub-app-ts/dist',
+    dest: 'docs/sub-app-ts',
   },
   {
-    src: 'sub-app-two/dist',
-    dest: 'docs/sub-app-two',
+    src: 'sub-app-js/dist',
+    dest: 'docs/sub-app-js',
   },
 ];
 

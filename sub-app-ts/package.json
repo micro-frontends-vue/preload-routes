@@ -1,0 +1,37 @@
+{
+  "name": "sub-app-ts",
+  "version": "0.1.0",
+  "private": true,
+  "devPort": 7310,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --report --target lib --formats umd-min ./src/module.ts",
+    "lint": "vue-cli-service lint",
+    "prettier": "prettier --config ./.prettierrc --write 'src/**/*.{js,vue,less}'"
+  },
+  "dependencies": {
+    "@types/node": "^10.12.11",
+    "vue": "^2.5.17",
+    "vue-class-component": "^6.0.0",
+    "vue-module-register": "^2.0.3",
+    "vue-property-decorator": "^7.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-plugin-typescript": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/eslint-config-prettier": "^4.0.0",
+    "@vue/eslint-config-typescript": "^3.2.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "modify-chunk-id-webpack-plugin": "^0.1.4",
+    "typescript": "^3.0.0",
+    "vue-template-compiler": "^2.5.17"
+  }
+}

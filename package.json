@@ -1,8 +1,9 @@
 {
   "name": "vue-simple-micro-frontends",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
+    "ins": "source ./install.sh",
     "serve": "node ./serve.js",
     "build": "source ./build.sh",
     "build:serve": "npm run build && npm run serve",

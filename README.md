@@ -1,6 +1,6 @@
 # vue-simple-micro-frontends
 
-[Detail](./detail.md)
+~~[Detail](./detail.md)~~ (need update)
 
 Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.com/fe_tiny_spa.html)(@[美团技术团队](https://tech.meituan.com))
 
@@ -9,11 +9,8 @@ Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.co
 ### Compiles and hot-reloads for development
 
 ```bash
-# make 'install.sh' and 'serve.sh' executable
-chmod 777 install.sh
-
 # install dependencies
-./install.sh
+yarn ins
 
 # development serve
 
@@ -22,11 +19,11 @@ cd entry-app
 yarn serve
 
 # open a new shell, dev sub-app
-cd sub-app-one
+cd sub-app-ts
 yarn serve
 
 # open a new shell, dev sub-app
-cd sub-app-two
+cd sub-app-js
 yarn serve
 
 # open: http://localhost:7300/

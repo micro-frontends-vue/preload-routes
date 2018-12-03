@@ -8,7 +8,9 @@
     "build": "vue-cli-service build --report --target lib --formats umd-min --name sub-app-two ./src/module.js",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vue-module-register": "^2.0.3"
+  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.1.1",
     "@vue/cli-plugin-eslint": "^3.1.4",

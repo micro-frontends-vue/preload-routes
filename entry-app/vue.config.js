@@ -1,7 +1,9 @@
 const webpack = require('webpack');
+const InsertScriptPlugin = require('./scripts/InsertScriptWebpackPlugin');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
 const PROXY = require('./config/proxy');
+const modules = require('./src/modules');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -15,11 +17,7 @@ module.exports = {
 
   configureWebpack: {
     externals: {
-      lodash: '_',
-      moment: 'moment',
       vue: 'Vue',
-      vuex: 'Vuex',
-      'vue-router': 'VueRouter',
       'element-ui': 'ELEMENT',
     },
 
@@ -27,6 +25,7 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
       }),
+      new InsertScriptPlugin({ files: modules }),
     ],
   },
 

@@ -12,12 +12,8 @@
 </template>
 
 <script>
-import loaderMixin from '@/loader-mixin';
-
 export default {
   name: 'EntryApp',
-
-  mixins: [loaderMixin],
 
   data() {
     return {

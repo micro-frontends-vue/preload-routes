@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import '../base';
+
 export default {
   name: 'ModuleTwoIndex',
 

@@ -9,7 +9,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue-auto-storage": "^1.8.1"
+    "vue-auto-storage": "^1.8.1",
+    "vue-module-register": "^2.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.1.1",

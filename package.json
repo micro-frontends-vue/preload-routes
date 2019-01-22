@@ -1,19 +1,23 @@
 {
   "name": "vue-simple-micro-frontends",
   "version": "2.1.0",
-  "private": true,
   "scripts": {
     "ins": "source ./install.sh",
     "serve": "node ./serve.js",
     "build": "source ./build.sh",
     "build:serve": "npm run build && npm run serve",
-    "build:demo": "rimraf docs && npm run build && node ./copy.js"
+    "build:demo": "rimraf docs && npm run build && node ./copy.js",
+    "dev:doc": "vuepress dev docs",
+    "build:doc": "vuepress build docs",
+    "deploy": "npm run build:doc && npm run build:demo"
   },
   "dependencies": {},
   "devDependencies": {
     "connect-timeout": "^1.9.0",
     "express": "^4.16.4",
     "recursive-copy": "^2.0.9",
-    "rimraf": "^2.6.2"
-  }
+    "rimraf": "^2.6.2",
+    "vuepress": "^0.14.8"
+  },
+  "license": "MIT"
 }

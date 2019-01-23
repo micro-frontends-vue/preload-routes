@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@types/node": "^10.12.11",
-    "vue": "^2.5.17",
+    "vue": "^2.5.22",
     "vue-class-component": "^6.0.0",
     "vue-module-register": "^2.0.3",
     "vue-property-decorator": "^7.0.0",
@@ -32,6 +32,6 @@
     "less-loader": "^4.1.0",
     "modify-chunk-id-webpack-plugin": "^0.1.4",
     "typescript": "^3.0.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.22"
   }
 }

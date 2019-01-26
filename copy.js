@@ -2,21 +2,22 @@ const copy = require('recursive-copy');
 
 const task = [
   {
-    src: 'entry-app/dist',
+    src: 'applications/app-entry/dist',
     dest: 'docs',
   },
   {
-    src: 'sub-app-ts/dist',
-    dest: 'docs/sub-app-ts',
+    src: 'applications/app-typescript/dist',
+    dest: 'docs/app-typescript',
   },
   {
-    src: 'sub-app-js/dist',
-    dest: 'docs/sub-app-js',
+    src: 'applications/app-javascript/dist',
+    dest: 'docs/app-javascript',
   },
 ];
 
 task.forEach(({ src, dest }) => {
   copy(src, dest, (error) => {
-    error && console.error('[Copy failed]', `src: ${src}, dest: ${dest}`, error);
+    error &&
+      console.error('[Copy failed]', `src: ${src}, dest: ${dest}`, error);
   });
 });

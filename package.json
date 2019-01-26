@@ -1,19 +1,18 @@
 {
-  "name": "vue-simple-micro-frontends",
-  "version": "2.1.0",
+  "name": "root",
+  "private": true,
   "scripts": {
-    "ins": "source ./install.sh",
-    "serve": "node ./serve.js",
-    "build": "source ./build.sh",
-    "build:serve": "npm run build && npm run serve",
-    "build:demo": "rimraf docs && npm run build && node ./copy.js"
+    "install": "lerna exec --stream -- yarn",
+    "reinstall": "lerna exec --stream -- rm -rf node_modules && yarn",
+    "serve": "lerna run serve --parallel",
+    "build": "lerna run build --stream",
+    "copy": "rimraf docs && node ./copy.js",
+    "build:example": "yarn build && yarn copy",
+    "prettier": "prettier --config ./.prettierrc --ignore-path 'node_modules' --write 'applications/**/*.{ts,js,vue,less}'"
   },
-  "dependencies": {},
   "devDependencies": {
-    "connect-timeout": "^1.9.0",
-    "express": "^4.16.4",
-    "recursive-copy": "^2.0.9",
-    "rimraf": "^2.6.2"
+    "lerna": "^3.10.7",
+    "recursive-copy": "^2.0.9"
   },
   "license": "MIT"
 }

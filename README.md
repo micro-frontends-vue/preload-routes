@@ -10,23 +10,12 @@ Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.co
 
 ```bash
 # install dependencies
-yarn ins
+yarn
 
 # development serve
-
-# dev entry-app
-cd entry-app
 yarn serve
 
-# open a new shell, dev sub-app
-cd sub-app-ts
-yarn serve
-
-# open a new shell, dev sub-app
-cd sub-app-js
-yarn serve
-
-# open: http://localhost:7300/
+# open: http://localhost:10240/
 ```
 
 ### Compiles and minifies for production
@@ -35,8 +24,6 @@ yarn serve
 # production build
 yarn build
 
-# production build with serve
-yarn build:serve
-
-# open: http://localhost:3000/
+# production build with example
+yarn build:example
 ```

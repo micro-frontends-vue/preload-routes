@@ -6,6 +6,11 @@
 
 Inspired by [用微前端的方式搭建类单页应用](https://tech.meituan.com/fe_tiny_spa.html)(@[美团技术团队](https://tech.meituan.com))
 
+## Two ways to load subprojects
+
+- [load subprojects in advance](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/master)
+- [async load subprojects](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/v1)
+
 ## Project setup
 
 ### Compiles and hot-reloads for development

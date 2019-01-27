@@ -11,7 +11,7 @@ log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  baseUrl: `/${APP_NAME}/`,
+  publicPath: `/${APP_NAME}/`,
 
   productionSourceMap: false,
 

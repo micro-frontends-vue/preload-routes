@@ -7,7 +7,10 @@ Vue.use(Router);
 const routes = Vue.prototype.__share_pool__.routes;
 
 export default new Router({
-  routes: Object.values(routes).reduce((acc, prev) => {
-    return acc.concat(prev);
-  }, []),
+  routes: Object.values(routes).reduce((acc, prev) => acc.concat(prev), [
+    {
+      path: '/',
+      redirect: '/app-typescript',
+    },
+  ]),
 });

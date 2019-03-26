@@ -11,8 +11,8 @@
     "prettier": "prettier --config ./.prettierrc --ignore-path 'node_modules' --write 'applications/**/*.{ts,js,vue,less}'"
   },
   "devDependencies": {
-    "lerna": "^3.10.7",
-    "recursive-copy": "^2.0.9"
+    "lerna": "^3.13.1",
+    "recursive-copy": "^2.0.10"
   },
   "license": "MIT"
 }

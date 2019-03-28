@@ -12,7 +12,7 @@
 
 ## 加载子项目的两种方式
 
-- 预加载子项目入口文件 -- 文档待添加 / [source code](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/master)
+- 预加载子项目入口文件 -- [文档](./v2.md) / [source code](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/master)
 - 懒加载子项目 -- [文档](./v1.md) / [source code](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/v1)
 
 ## 使用

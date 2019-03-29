@@ -2,13 +2,13 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "install": "lerna exec --stream -- yarn",
-    "reinstall": "lerna exec --stream -- rm -rf node_modules && yarn",
+    "install": "lerna exec --parallel -- yarn",
+    "clean": "rm -rf node_modules && lerna exec --stream -- rm -rf node_modules",
+    "reinstall": "yarn clearn && yarn",
     "serve": "lerna run serve --parallel",
-    "build": "lerna run build --stream",
+    "build": "lerna run build --parallel",
     "copy": "rimraf docs && node ./copy.js",
-    "build:example": "yarn build && yarn copy",
-    "prettier": "prettier --config ./.prettierrc --ignore-path 'node_modules' --write 'applications/**/*.{ts,js,vue,less}'"
+    "build:example": "yarn build && yarn copy"
   },
   "devDependencies": {
     "lerna": "^3.13.1",

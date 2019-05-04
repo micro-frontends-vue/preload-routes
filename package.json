@@ -4,7 +4,7 @@
   "scripts": {
     "install": "lerna exec --parallel -- yarn",
     "clean": "rm -rf node_modules && lerna exec --stream -- rm -rf node_modules",
-    "reinstall": "yarn clearn && yarn",
+    "reinstall": "yarn clean && yarn",
     "serve": "lerna run serve --parallel",
     "build": "lerna run build --parallel",
     "copy": "rimraf docs && node ./copy.js",

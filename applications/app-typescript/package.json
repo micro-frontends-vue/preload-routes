@@ -3,8 +3,8 @@
   "devPort": 10241,
   "version": "0.1.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --report --target lib --formats umd-min ./src/main.ts"
+    "serve": "mfv-cli-service serve",
+    "build": "mfv-cli-service build --report --target lib --formats umd-min ./src/main.ts"
   },
   "dependencies": {
     "vue": "^2.6.10",
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-typescript": "^3.5.1",
-    "@vue/cli-service": "^3.5.1",
+    "mfv-cli-service": "^3.7.0",
     "typescript": "^3.3.4000",
     "vue-template-compiler": "^2.6.10"
   },

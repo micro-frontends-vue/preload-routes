@@ -1,10 +1,6 @@
 const webpack = require('webpack');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
-const patchCliService = require('./scripts/patch-cli-service');
-
-patchCliService();
-
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 log('APP_NAME: ', APP_NAME);

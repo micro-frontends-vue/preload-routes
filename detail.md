@@ -1,11 +1,11 @@
-# 懒加载子项目
+# 预加载子项目入口文件
 
 ## 思路
 
 1. 将子项目打包 UMD 模块，[教程](https://cli.vuejs.org/zh/guide/build-targets.html#库)
-2. 在主项目中加载子项目的入口文件
-3. 使用 vue-router 的 [`router.addRoutes`](https://github.com/zh-rocco/fe-notes/issues/29) 将子项目的路由动态注册到主项目中
-4. 使用 Vuex 的 [`store.registerModule`](https://github.com/zh-rocco/fe-notes/issues/31) 将子项目的 `store module` 动态注册到主项目中
+2. 在主项目中预先（主项目实例化 Vue 之前）挂载子项目的 routes
+3. 合并主项目和子项目的路由表
+4. 实例化主项目 Vue
 
 ## 具体实现
 
@@ -34,6 +34,7 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
       }),
+      new InsertScriptPlugin({ files: modules }), // 自动添加子项目入口文件至 index.html
     ],
   },
   devServer: {
@@ -41,6 +42,46 @@ module.exports = {
     proxy: PROXY,
   },
 };
+```
+
+`app-entry/scripts/InsertScriptWebpackPlugin.js`
+
+```js
+class InsertScriptWebpackPlugin {
+  constructor(options = {}) {
+    const { files = [] } = options;
+    this.files = files;
+  }
+
+  apply(compiler) {
+    const self = this;
+    compiler.hooks.compilation.tap(
+      'InsertScriptWebpackPlugin',
+      (compilation) => {
+        if (compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing) {
+          compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tap(
+            'InsertScriptWebpackPlugin',
+            (htmlPluginData) => {
+              const {
+                assets: { js },
+              } = htmlPluginData;
+              js.unshift(...self.files); // 优先加载 files 文件
+            },
+          );
+        } else {
+          console.log('\n');
+          console.log(
+            '\x1b[41m%s\x1b[0m',
+            'Error:',
+            '`insert-script-webpack-plugin` dependent on `html-webpack-plugin`',
+          );
+        }
+      },
+    );
+  }
+}
+
+module.exports = InsertScriptWebpackPlugin;
 ```
 
 #### 2. 手动引入外部依赖
@@ -54,7 +95,7 @@ module.exports = {
 
 <body>
   <script src="path/to/vue.min.js"></script>
-  <script src="path/to//element-ui/index.js"></script>
+  <script src="path/to/element-ui/index.js"></script>
 </body>
 ```
 
@@ -73,87 +114,67 @@ module.exports = {
 };
 ```
 
-#### 4. 将主项目的 router 实例和 store 实例挂载到 `Vue['__share_pool__']` 上
+#### 4. 将主项目的 store 实例挂载到 `Vue['__share_pool__']` 上
 
 `app-entry/src/main.js`
 
 ```js
-import router from './router'; // router 实例
 import store from './store'; // store 实例
 
 // 挂载主项目的 store 和 router 实例
 Reflect.defineProperty(Vue, '__share_pool__', {
   value: {
     store,
-    router,
   },
 });
 ```
 
-#### 5. 异步加载子项目
-
-`app-entry/src/router.js`
+#### 5. 合并主项目 / 子项目的 routes
 
 ```js
-import { loadModule } from './load-helper';
-import { modules } from './modules';
+import Vue from 'vue';
+import Router from 'vue-router';
 
-router.beforeEach(async (to, from, next) => {
-  const [, module] = to.path.split('/');
+Vue.use(Router);
 
-  if (Reflect.has(modules, module)) {
-    loadModule(modules[module]);
-    Reflect.deleteProperty(modules, module);
-  }
+// 获取子项目的 route-list
+const routes = Vue.__share_pool__.routes;
 
-  next();
+export default new Router({
+  routes: Object.values(routes).reduce((acc, prev) => acc.concat(prev), [
+    {
+      path: '/',
+      redirect: '/app-typescript',
+    },
+  ]),
 });
-```
-
-`app-entry/src/modules.js`
-
-```js
-export const modules = {
-  'app-typescript': './app-typescript/main.js',
-  'app-javascript': './app-javascript/main.js',
-};
-```
-
-`app-entry/src/load-helper.js`
-
-```js
-export function loadModule(url) {
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.onload = ({ type }) => resolve({ status: type, url });
-    script.onerror = ({ type }) => resolve({ status: type, url });
-    script.src = url;
-    document.body.appendChild(script);
-  });
-}
 ```
 
 ### 二、子项目（app-javascript）
 
 以 app-javascript 为例
 
-#### 1. 修改 build script
+#### 1. 添加 mfv-cli-service 依赖
+
+```bash
+yarn add mfv-cli-service -D
+```
+
+#### 2. 修改 build script
 
 `app-javascript/package.json`
 
 ```json
 {
   "scripts": {
-    "build": "vue-cli-service build --report --target lib --formats umd-min ./src/main.js"
+    "build": "mfv-cli-service build --report --target lib --formats umd-min ./src/main.js"
   }
 }
 ```
 
 这样可以将 app-javascript 构建成一个 UMD 文件，然后在 app-entry 中引用，[参考](https://cli.vuejs.org/zh/guide/build-targets.html#库)
 
-#### 2. 配置 `vue.config.js`
+#### 3. 配置 `vue.config.js`
 
 `app-javascript/vue.config.js`
 
@@ -161,9 +182,6 @@ export function loadModule(url) {
 const webpack = require('webpack');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort; // 开发模式下项目的启动端口
-const patchCliService = require('./scripts/patch-cli-service');
-
-patchCliService(); // 本地 hack Vue CLI 构建脚本，现网使用的话推荐在 npm 私服部署一套修改后的 vue-cli-service
 
 module.exports = {
   publicPath: `/${APP_NAME}/`, // 必须为绝对路径；配合 app-entry 中的 proxy 配置，配合生产环境下的 Nginx 配置
@@ -192,29 +210,7 @@ module.exports = {
 };
 ```
 
-`app-javascript/scripts/patch-cli-service.js`
-
-```js
-// 解决 Vue CLI 打包的 UMD 入口文件名不固定的问题
-// 解决 Vue CLI 打包的 UMD 文件未添加 hash id 的问题
-const fs = require('fs');
-const path = require('path');
-
-module.exports = function patchCliService() {
-  const libConfigPath = path.resolve(
-    __dirname,
-    '../node_modules/@vue/cli-service/lib/commands/build/resolveLibConfig.js',
-  );
-  const libConfig = fs.readFileSync(libConfigPath, { encoding: 'utf-8' });
-  const patchedLibConfig = libConfig
-    .replace('${entryName}.js', 'main.js')
-    .replace('${entryName}.[name].js', '[name].[chunkhash:5].js');
-
-  fs.writeFileSync(libConfigPath, patchedLibConfig, { encoding: 'utf-8' });
-};
-```
-
-#### 3. 修改入口文件，异步挂载 routes
+#### 4. 修改入口文件，挂载 routes
 
 `app-javascript/src/main.js`
 
@@ -222,8 +218,11 @@ module.exports = function patchCliService() {
 import Vue from 'vue';
 import routes from './routes';
 
-// 动态添加子项目的 route-list
-Vue.__share_pool__.router.addRoutes(routes);
+const sharePool = (Vue.__share_pool__ = Vue.__share_pool__ || {});
+const routesPool = (sharePool.routes = sharePool.routes || {});
+
+// 挂载子项目的 routes
+routesPool[process.env.VUE_APP_NAME] = routes;
 ```
 
 `app-javascript/src/routes.js`
@@ -290,13 +289,7 @@ export default {
 
 ## 不足 & 待解决的问题
 
-#### 1. 鉴权问题
-
-由于子项目的路由是异步加载 / 注册的，导致子项目无法使用 `meta` 判断路由是否需要鉴权
-
-**优化方向: 在主项目实例化之前加载子项目的路由**，参考：[预加载子项目入口文件](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/master)
-
-#### 2. 子项目缓存问题
+#### 1. 子项目缓存问题
 
 推荐在服务端为子项目入口文件添加协商缓存。
 

@@ -1,19 +1,18 @@
-# vue-simple-micro-frontends
+# 预加载子项目路由
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 灵感来自于 [用微前端的方式搭建类单页应用](https://tech.meituan.com/fe_tiny_spa.html)(@[美团技术团队](https://tech.meituan.com))
 
+## 关联项目
+
+- 异步加载子项目路由 -- [传送门](https://github.com/micro-frontends-vue/async-routes)
+
 ## 设计目标
 
-1. 子项目支持单独开发，单独部署（避免前端巨无霸，多团队同时开发）
+1. 子项目支持单独开发，单独部署（避免前端巨无霸，多团队同时参与）
 2. 单一的入口 HTML（不同项目之间切换时无白屏现象）
 3. 支持多语言开发（JavaScript、TypeScript 等）
-
-## 加载子项目的两种方式
-
-- 预加载子项目入口文件 -- [文档](./v2.md) / [source code](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/master)
-- 懒加载子项目 -- [文档](./v1.md) / [source code](https://github.com/zh-rocco/vue-simple-micro-frontends/tree/v1)
 
 ## 使用
 

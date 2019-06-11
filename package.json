@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "install": "lerna exec --parallel -- yarn",
+    "install": "lerna exec --stream -- yarn",
     "clean": "rm -rf node_modules && lerna exec --stream -- rm -rf node_modules",
     "reinstall": "yarn clean && yarn",
     "serve": "lerna run serve --parallel",

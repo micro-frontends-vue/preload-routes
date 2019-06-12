@@ -7,6 +7,7 @@ node_js:
   - "8"
 
 script:
+  - npm run start
   - npm run build:example
 
 branches:

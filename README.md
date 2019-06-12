@@ -17,15 +17,14 @@
 ## 使用
 
 [详细教程](./detail.md)
-
 ### 开发
 
 ```bash
 # 安装依赖
-yarn
+npm run start
 
 # 开发模式
-yarn serve
+npm run serve
 
 # 打开: http://localhost:10240/
 ```
@@ -34,8 +33,8 @@ yarn serve
 
 ```bash
 # 生产构建
-yarn build
+npm run build
 
 # 构建 example 站点
-yarn build:example
+npm run build:example
 ```

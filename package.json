@@ -2,13 +2,12 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "install": "lerna exec --stream -- yarn",
-    "clean": "rm -rf node_modules && lerna exec --stream -- rm -rf node_modules",
-    "reinstall": "yarn clean && yarn",
+    "start": "npm install && lerna bootstrap --ignore-prepublish",
+    "clean": "lerna clean --yes && rm -rf node_modules",
     "serve": "lerna run serve --parallel",
     "build": "lerna run build --parallel",
     "copy": "rimraf docs && node ./copy.js",
-    "build:example": "yarn build && yarn copy"
+    "build:example": "npm run build && npm run copy"
   },
   "devDependencies": {
     "lerna": "^3.13.1",

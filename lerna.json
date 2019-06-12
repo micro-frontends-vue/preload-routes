@@ -1,9 +1,9 @@
 {
   "version": "1.0.0",
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "command": {
     "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]
+      "npmClientArgs": []
     }
   },
   "packages": ["applications/*"]

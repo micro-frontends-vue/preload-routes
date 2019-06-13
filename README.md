@@ -21,10 +21,10 @@
 
 ```bash
 # 安装依赖
-npm run start
+yarn start
 
 # 开发模式
-npm run serve
+yarn serve
 
 # 打开: http://localhost:10240/
 ```
@@ -33,8 +33,8 @@ npm run serve
 
 ```bash
 # 生产构建
-npm run build
+yarn build
 
 # 构建 example 站点
-npm run build:example
+yarn build:example
 ```

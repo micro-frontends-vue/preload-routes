@@ -3,16 +3,16 @@
   "devPort": 10242,
   "version": "0.1.0",
   "scripts": {
-    "serve": "mfv-cli-service serve",
-    "build": "mfv-cli-service build --report --target lib --formats umd-min ./src/main.js"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --report"
   },
   "dependencies": {
     "vue": "^2.6.10",
-    "vue-router": "^3.0.2",
-    "vuex": "^3.1.0"
+    "vue-router": "^3.1.3",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "mfv-cli-service": "^3.7.0",
+    "@vue/cli-service": "^4.1.0",
     "vue-template-compiler": "^2.6.10"
   },
   "postcss": {

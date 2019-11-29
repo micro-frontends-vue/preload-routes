@@ -7,7 +7,6 @@ docs
 
 # lock files
 yarn.lock
-package-lock.json
 
 # Editor directories and files
 .idea

@@ -7,27 +7,37 @@ log('APP_NAME: ', APP_NAME);
 log('NODE_ENV: ', NODE_ENV);
 
 module.exports = {
-  publicPath: `/${APP_NAME}/`,
+  publicPath: `${NODE_ENV === 'development' ? '' : '.'}/${APP_NAME}/`,
+
+  css: {
+    extract: false
+  },
 
   productionSourceMap: false,
 
-  configureWebpack: {
-    externals: {
-      vue: 'Vue',
-    },
+  chainWebpack: (config) => {
+    config.externals({
+      'vue': 'Vue'
+    })
 
-    entry: './src/main.ts',
+    config.output
+      .filename('main.js')
+      .chunkFilename('[name].[chunkhash:8].js')
+      .jsonpFunction(`webpackJsonp-${APP_NAME}`)
+      .library(`app-${APP_NAME}`)
+      .libraryExport('default')
+      .libraryTarget('umd')
 
-    output: {
-      libraryExport: 'default',
-      jsonpFunction: `webpackJsonp-${APP_NAME}`,
-    },
+    config.optimization.splitChunks(false)
 
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME),
-      }),
-    ],
+    config.plugin('define').use(webpack.DefinePlugin, [{
+      'process.env.VUE_APP_NAME': JSON.stringify(APP_NAME)
+    }])
+
+    config.plugins
+      .delete('html')
+      .delete('preload')
+      .delete('prefetch')
   },
 
   devServer: {

@@ -2,16 +2,16 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "start": "yarn && lerna exec --stream -- yarn",
-    "clean": "lerna clean --yes && rm -rf node_modules",
+    "bootstrap": "npm install && lerna bootstrap",
     "serve": "lerna run serve --parallel",
-    "build": "lerna run build --parallel",
-    "copy": "rimraf docs && node ./copy.js",
-    "build:example": "yarn build && yarn copy"
+    "build-package": "lerna run build --parallel",
+    "build": "npm run build-package && npm run move",
+    "move": "node move.js",
+    "clean": "lerna clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "lerna": "^3.13.1",
-    "recursive-copy": "^2.0.10"
+    "fs-extra": "^8.1.0",
+    "lerna": "^3.19.0"
   },
   "license": "MIT"
 }

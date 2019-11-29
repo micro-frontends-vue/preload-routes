@@ -2,8 +2,22 @@ const webpack = require('webpack');
 const InsertScriptPlugin = require('./scripts/InsertScriptWebpackPlugin');
 const APP_NAME = require('./package.json').name;
 const PORT = require('./package.json').devPort;
-const PROXY = require('./config/proxy');
-const modules = require('./src/modules');
+
+const PROXY = {
+  '/app-typescript/': {
+    target: 'http://localhost:10241/'
+  },
+  '/app-javascript/': {
+    target: 'http://localhost:10242/'
+  }
+}
+
+const modules = [
+  // sub apps
+  './app-typescript/main.js',
+  './app-javascript/main.js',
+];
+
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -17,8 +31,7 @@ module.exports = {
 
   configureWebpack: {
     externals: {
-      vue: 'Vue',
-      'element-ui': 'ELEMENT',
+      vue: 'Vue'
     },
 
     plugins: [
